@@ -1,0 +1,170 @@
+html
+    head
+        title movieWeb for final
+        script(src='http://jsgetip.appspot.com', type='text/javascript')
+        link(type='text/css', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css',  rel='stylesheet')
+        script(src='https://code.jquery.com/jquery-1.12.4.js', type='text/javascript')
+        script(src='https://code.jquery.com/ui/1.12.1/jquery-ui.js', type='text/javascript')
+        script
+            |    $(function() {
+            |        let addr = ip();
+            |        $('select[name="category"]').change(function() {
+            |            let $this = $(this);
+            |            location.href="/"+$this.val();
+            |        });
+            |        $("#userIP").val(addr);
+            |    });
+        style(type='text/css').
+            @import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+            *{
+                font-family: "Jeju Gothic", serif;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                font-weight: Medium;
+                font-size: 14px;
+                text-decoration: none;
+            }
+            body {
+                background-color:#131313;
+            }
+            h2{
+                font-size:1.3rem;
+                color:#faf3dd;
+            }
+            p, span{
+                color:white;
+            }
+            #container{
+                position:absolute;
+                width:100%;
+                height:100%;
+            }
+            #topMenu{
+                position:fixed;
+                left:0;
+                z-index:1;
+                background-color:#131313;
+                color:white;
+                margin:20px;
+            }
+            #topMenu2{
+                position:fixed;
+                right:0;
+                z-index:1;
+                background-color:#131313;
+                color:white;
+                margin:20px;
+            }
+            #search{
+                z-index:1;
+            }
+            #searchSpan{
+                z-index:1;
+                position:fixed;
+                right:0;
+                margin:20px;
+                top:30px;
+                
+            }
+            #listWrapper{
+                width:100%;
+                height:auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                top:100px;
+                flex-wrap:wrap;
+            }
+            #lists{
+                width:250px;
+                height:550px;
+                float:left;
+                display: flex;
+                align-items: center;
+                flex-direction:column;
+                margin-bottom:50px;
+                text-align:center;
+                margin-left:2%;
+                margin-right:2%;
+            }
+            img{
+                position: relative;
+                width:200px;
+                height:300px;
+            }
+            #hTitle, #hTitle p{
+                width:100%;
+                height:100px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size:2rem;
+                color:white;
+            }
+            #ReservationBtn {
+                position: relative;
+                width: 170px;
+                height: 40px;
+                color:white;
+                background-color: #131313;
+                border: 1px solid #131313;
+                border-bottom: 1px solid white;
+                border-radius: 5px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+            #ReservationBtn:hover{
+                background-color: white;
+                color:black;
+            }
+
+    body
+        #container
+            #topMenu
+                span
+                    span 정렬방법 선택
+                    select(name="category" id="selection")
+                        option(id="selected") 영화리스트 필터
+                        -for(var i = 0;i<genres.length;i++){
+                        option(value="#{i}" onchange="a()") #{genres[i]}
+                        -}
+            #topMenu2
+                span
+                    form(action="/history" method='post')
+                        input(type='hidden' id='userIP' name='ip' value='')
+                        input(type='submit' value='내 대여 내역')
+            #search
+                span#searchSpan
+                    form(action="/search" method='post')
+                        input(type='text' id='search' name='keyword' placeholder='검색')
+                        input(type='submit' value='검색adas')
+            #hTitle
+                p= '검색결과 : ' + count+'개'
+
+            ul#listWrapper
+                for movies in movie
+                    #lists
+                        li
+                            img(src=movies.mediumImgsrc, alt=movies.id)
+                            br
+                            br
+                            h2= movies.title
+                            br
+                            p=movies.genre
+                            br
+                            p= 'Summary'
+                            p=movies.summary
+                    
+                        form(action="/reservation" method='post')
+                            p
+                                input(type='hidden' name='movieID' value=movies.id)
+                                input(type='hidden' name='movieTitle' value=movies.title)
+                                input(type='hidden' name='movieGenre' value=movies.genre)
+                                input(type='hidden' name='moviefullSummary' value=movies.fullsummary)
+                                input(type='hidden' name='moviePoster' value=movies.largeImgsrc)
+                                input(type='hidden' name='movieTorrentUrl' value=movies.torrentUrl)
+                                input(type='hidden' name='movieTorrentPixel' value=movies.torrentPixel)
+                                input(type='hidden' name='ip' value=ip)
+                                br
+                                input(type='submit' id='ReservationBtn' value='대여하기')

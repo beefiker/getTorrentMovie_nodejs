@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+        style(type='text/css').
+            @import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+            *{
+                font-family: "Jeju Gothic", serif;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                font-weight: Medium;
+                font-size: 14px;
+                text-decoration: none;
+            }
+            body {
+                background-color:#131313;
+            }
+            #container{
+                position:absolute;
+                width:100%;
+                height:100%;
+                display:flex;
+                flex-direction:column;
+                justify-content: center;
+                align-items: center;
+
+            }
+            #wrapper{
+                position: relative;
+                width:100%;
+                height:70%;
+                display:flex;
+                flex-direction:column;
+                justify-content: center;
+                align-items: center;
+                z-index:1;
+            }
+            h1{
+                font-size: 3rem;
+                color : #faf3dd;
+            }
+            
+            h3{
+                font-size:1rem;
+                color:gray;
+            }
+            p{
+                color:white;
+            }
+            span{
+                color:#f9c901;
+            }
+            img{
+                width:300px;
+            }
+            #link a{ 
+                font-size:30px;
+                font-weight:bold;
+                color:white;
+            }
+            #link a:hover{ 
+                color:#f9c901;
+            }
+
+    body
+        #container
+            #wrapper
+                h3= 'IP : '+ip
+                br
+
+                h1= title
+                br
+                img(src=poster, alt=id)
+                br
+                span= '대여 시작일 : '+date
+                br
+                span= '만료일 : '+expireDay+'일'
+                br
+                br
+                p#link
+                    a(href=url id='hiperlink')= ">> "+pixel+" <<"
+            
