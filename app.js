@@ -49,11 +49,11 @@ let expireDay = `${expire_getYear}-${expire_getMonth}-${expire_getDate}`;
 
 for (let i = 0; i < movieGenres.length; i++) {
   if (i < 2) {
-    request("https://yts.mx/api/v2/list_movies.json?limit=50&sort_by=" + movieGenres[i], (err, res, body) => {
+    request("https://yts-proxy.now.sh/list_movies.json?limit=50&sort_by=" + movieGenres[i], (err, res, body) => {
       sortByGenre[i] = JSON.parse(body);
     });
   } else {
-    request("https://yts.mx/api/v2/list_movies.json?limit=50&genre=" + movieGenres[i], (err, res, body) => {
+    request("https://yts-proxy.now.sh/list_movies.json?limit=50&genre=" + movieGenres[i], (err, res, body) => {
       sortByGenre[i] = JSON.parse(body);
     });
   }
@@ -89,11 +89,13 @@ app.get("/", (req, res) => {
         movieTorrentURL = torrents[t].url;
         movieTorrentPixel = torrents[t].quality;
       }
-
-      for (let j = 0; j < moviesArray[i].genres.length; j++) {
-        if (j == moviesArray[i].genres.length - 1) movieGenre += moviesArray[i].genres[j];
-        else movieGenre += moviesArray[i].genres[j] + ", ";
+      if (moviesArray[i].genres != null) {
+        for (let j = 0; j < moviesArray[i].genres.length; j++) {
+          if (j == moviesArray[i].genres.length - 1) movieGenre += moviesArray[i].genres[j];
+          else movieGenre += moviesArray[i].genres[j] + ", ";
+        }
       }
+
       connection.query(
         `insert into movie values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
@@ -187,7 +189,7 @@ app.post("/result", (req, res) => {
     `insert into reservation(ip, title, poster, expireDate, torrentUrl) values(?, ?, ?, ?, ?)`,
     [ip, movieTitle, moviePoster, expireDay, url],
     (err, rows) => {
-      if (err) throw error;
+      if (err) console.log(err);
     }
   );
 
